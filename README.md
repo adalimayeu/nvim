@@ -1,4 +1,8 @@
-## Installing from an existing User Configuration
+# nvim
+
+This repository contains AstroNvim user configuration which expands default one.
+
+## Installation
 
 [https://docs.astronvim.com/configuration/manage_user_config/](https://docs.astronvim.com/configuration/manage_user_config/)
 
