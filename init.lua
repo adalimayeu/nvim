@@ -103,6 +103,7 @@ return {
           "gopls",
           "jsonls",
           "dockerls",
+          "marksman",
         },
       },
     },
