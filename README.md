@@ -11,18 +11,18 @@ in a repository, then the process of getting your system up and running is very 
 
 1. Clone AstroNvim (normal installation instructions)
 
-```sh
-git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
-```
+    ```sh
+    git clone --depth 1 https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+    ```
 
-2. Clone your empty new repository to your ~/.config/nvim/lua folder
+1. Clone your empty new repository to your ~/.config/nvim/lua folder
 
-```sh
-git clone https://github.com/username/astronvim_config.git ~/.config/nvim/lua/user
-```
+    ```sh
+    git clone https://github.com/username/astronvim_config.git ~/.config/nvim/lua/user
+    ```
 
-3. Initialize AstroNvim
+1. Initialize AstroNvim
 
-```sh
-nvim --headless -c 'quitall'
-```
+    ```sh
+    nvim --headless -c 'quitall'
+    ```
