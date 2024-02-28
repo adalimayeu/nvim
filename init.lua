@@ -3,9 +3,19 @@ return {
   lsp = {
     formatting = {
       format_on_save = false, -- enable or disable automatic formatting on save
+      timeout_ms = 4000
     },
   },
   plugins = {
+    {
+      "jemag/telescope-diff.nvim",
+      dependencies = {
+       { "nvim-telescope/telescope.nvim" },
+      },
+      opts = function()
+        require("telescope").load_extension("diff")
+      end
+    },
     {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -104,32 +114,70 @@ return {
           "jsonls",
           "dockerls",
           "marksman",
+          "groovyls",
         },
       },
     },
+    {
+      "jay-babu/mason-null-ls.nvim",
+      opts = {
+        ensure_installed = {
+          -- formatters
+          "black",
+          "jq",
+          "stylua",
+          "hclfmt",
+          "luaformatter",
+          "prettier",
+          "sqlfmt",
+          "yamlfmt",
+          "autoflake",
+          "shfmt",
+          "golines",
+          "autopep8",
+          -- linters
+          "ansible-lint",
+          "cpplint",
+          "flake8",
+          "golangci-lint",
+          "htmlhint",
+          "jsonlint",
+          "luacheck",
+          "pylint",
+          "shellcheck",
+          "sqlfluff",
+          "tflint",
+          "yamllint",
+          "markdownlint",
+          "sonarlint-language-server",
+        }
+      },
+    },
   },
-  
+
   options = {
     opt = {
       scrolloff = 10
-    } 
+    }
   },
+
   mappings = {
     n = {
       ["<C-`>"] = { "<cmd>ToggleTerm size=20 direction=horizontal<cr>", desc = "Toggle terminal" },
       ["<leader>tl"] = { "<cmd>ToggleTermSendCurrentLine<cr>", desc = "ToggleTerm execute current line" },
       ["<leader>um"] = { "<cmd>MarkdownPreviewToggle<cr>", desc = "Toggle Markdown Preview" },
+      ["<leader>fd"] = { function() require("telescope").extensions.diff.diff_current({ hidden = true }) end, desc = "Compare current file with another one" } -- Control+F5
     },
     v = {
       ["<leader>te"] = { "<cmd>ToggleTermSendVisualSelection<cr>", desc = "ToggleTerm execute selection" },
     },
   },
+
   polish = function()
     local function yaml_ft(path, bufnr)
       -- get content of buffer as string
       local content = vim.filetype.getlines(bufnr)
       if type(content) == "table" then content = table.concat(content, "\n") end
-
       -- check if file is in roles, tasks, or handlers folder
       local path_regex = vim.regex "(tasks\\|roles\\|handlers)/"
       if path_regex and path_regex:match_str(path) then return "yaml.ansible" end
@@ -137,7 +185,7 @@ return {
       local regex = vim.regex "hosts:\\|tasks:"
       if regex and regex:match_str(content) then return "yaml.ansible" end
       -- check for known docker-compose text and of found, return yaml.docker-compose
-      local regex = vim.regex "version:\\|services:"
+      local regex = vim.regex "^version:\\|^services:"
       if regex and regex:match_str(content) then return "yaml.docker-compose" end
       -- return yaml if nothing else
       return "yaml"
